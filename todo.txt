@@ -1,0 +1,3 @@
+- [x] Add refresh logic to public product list page (src/app/(main)/product/page.js) to listen for product updates
+- [x] Improve image cache busting in admin product list page to ensure new images display immediately
+- [x] Test the update flow to verify images refresh properly
