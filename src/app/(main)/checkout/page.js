@@ -84,7 +84,7 @@ const handleSubmit = async (e) => {
       }
 
       // TRƯỜNG HỢP 2: THANH TOÁN COD
-      // Xóa giỏ hàng local sau khi đặt hàng thành công
+      // Xóa giỏ hàng local sau khi đặt hàng thànnh công
       localStorage.removeItem(`cart_user_${user.id}`);
       setCart([]);
       

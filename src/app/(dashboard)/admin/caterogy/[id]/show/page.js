@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, Package, Edit, Trash2 } from 'lucide icons\react';
+// import { ArrowLeft, Package, Edit, Trash2 } from 'lucide icons\react';
 import { useParams } from 'next/navigation';
 
 export default function CategoryDetail() {
