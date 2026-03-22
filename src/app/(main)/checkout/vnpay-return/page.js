@@ -1,9 +1,10 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { CheckCircle2, XCircle, Loader2 } from "lucide-react";
 
-export default function VNPayReturnPage() {
+// 1. Tạo một component con chứa logic xử lý SearchParams
+function VNPayContent() {
     const searchParams = useSearchParams();
     const router = useRouter();
     const [status, setStatus] = useState("processing");
@@ -12,21 +13,24 @@ export default function VNPayReturnPage() {
         const responseCode = searchParams.get("vnp_ResponseCode");
         
         if (responseCode === "00") {
-            // Thanh toán thành công
             setStatus("success");
-            // Xóa giỏ hàng local sau khi thanh toán thành công
-            const userData = JSON.parse(localStorage.getItem("user"));
+            const userData = JSON.parse(localStorage.getItem("user") || "null");
             if (userData) {
                 localStorage.removeItem(`cart_user_${userData.id}`);
                 window.dispatchEvent(new Event("cartUpdated"));
             }
         } else {
-            // Thanh toán thất bại hoặc người dùng hủy
             setStatus("error");
         }
     }, [searchParams]);
 
-    if (status === "processing") return <div className="flex h-screen items-center justify-center"><Loader2 className="animate-spin" /></div>;
+    if (status === "processing") {
+        return (
+            <div className="flex h-screen items-center justify-center">
+                <Loader2 className="animate-spin text-indigo-600" size={48} />
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
@@ -46,5 +50,18 @@ export default function VNPayReturnPage() {
                 </div>
             )}
         </div>
+    );
+}
+
+// 2. Component chính Export ra phải được bọc trong Suspense
+export default function VNPayReturnPage() {
+    return (
+        <Suspense fallback={
+            <div className="flex h-screen items-center justify-center">
+                <Loader2 className="animate-spin text-indigo-600" size={48} />
+            </div>
+        }>
+            <VNPayContent />
+        </Suspense>
     );
 }
