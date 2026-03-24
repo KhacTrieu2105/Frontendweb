@@ -2,14 +2,15 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost/NguyenKhacTrieu_backend/public/api", // ← Chuẩn nhất khi chạy php artisan serve
-  // Nếu bạn buộc phải dùng XAMPP/public folder: "http://localhost/NguyenKhacTrieu_backend/public/api"
-  timeout: 15000,
+  // Sử dụng biến môi trường từ Vercel, nếu không có thì dùng thẳng link Render làm dự phòng
+  baseURL: process.env.NEXT_PUBLIC_API_URL 
+    ? `${process.env.NEXT_PUBLIC_API_URL}/api` 
+    : "https://backendweb-1-i696.onrender.com/api",
   headers: {
-    Accept: "application/json",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
   },
 });
-
 // Tự động gắn Bearer Token nếu có (chỉ chạy ở client-side)
 api.interceptors.request.use(
   (config) => {

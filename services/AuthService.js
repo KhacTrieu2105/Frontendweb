@@ -1,13 +1,15 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost/NguyenKhacTrieu_backend/public/api",
+  // Sử dụng biến môi trường từ Vercel, nếu không có thì dùng thẳng link Render làm dự phòng
+  baseURL: process.env.NEXT_PUBLIC_API_URL 
+    ? `${process.env.NEXT_PUBLIC_API_URL}/api` 
+    : "https://backendweb-1-i696.onrender.com/api",
   headers: {
     "Content-Type": "application/json",
     "Accept": "application/json",
   },
 });
-
 // Gắn token vào header cho mọi request
 api.interceptors.request.use(config => {
   if (typeof window !== "undefined") {
